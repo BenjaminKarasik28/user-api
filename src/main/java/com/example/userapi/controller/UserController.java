@@ -1,6 +1,8 @@
 package com.example.userapi.controller;
 
+import com.example.userapi.exceptionhandling.EmailSignupException;
 import com.example.userapi.exceptionhandling.ErrorResponse;
+import com.example.userapi.exceptionhandling.ExistingUserSignupException;
 import com.example.userapi.exceptionhandling.IncorrectLoginException;
 import com.example.userapi.model.JwtResponse;
 import com.example.userapi.model.User;
@@ -17,11 +19,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @GetMapping("/hello")
-    public String test(){
-        return "Hello World!";
-    }
 
     @ApiOperation(value = "User login", notes = "Provide email and password to login", response = ResponseEntity.class)
     @PostMapping("/login")
@@ -53,9 +50,9 @@ public class UserController {
         return userService.getEmailByUsername(username);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(IncorrectLoginException err){
-        ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), err.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    @ExceptionHandler({IncorrectLoginException.class, EmailSignupException.class, ExistingUserSignupException.class})
+    public ResponseEntity<ErrorResponse> handleException(Exception err){
+        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), err.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

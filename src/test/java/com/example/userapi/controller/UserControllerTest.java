@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 
+@EnableWebMvc
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
@@ -107,7 +109,7 @@ public class UserControllerTest {
         when(userService.userLogin(any())).thenThrow(new IncorrectLoginException("Wrong"));
 
         MvcResult result = mockMvc.perform(requestBuilder)
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isBadRequest())
                 .andReturn();
 
     }
@@ -191,7 +193,5 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"username\":\"batman\"}"))
                 .andReturn();
-
-        System.out.println(result.getResponse().getContentAsString());
     }
 }
