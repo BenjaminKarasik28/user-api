@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Represents user role.
+ * A user can have many roles.
+ */
 @Entity
 @Table(name = "role")
 public class UserRole {
@@ -14,8 +18,16 @@ public class UserRole {
 
     private List<User> users;
 
+    /**
+     * Gets users
+     * @return list of users
+     */
     public List<User> getUsers(){ return users; }
 
+    /**
+     * Sets users
+     * @param users type Users
+     */
     public void setUsers(List<User> users) { this.users = users; }
 
     @Id
@@ -27,7 +39,7 @@ public class UserRole {
     private String name;
 
     /**
-     * The default constructor.
+     * The default constructor
      */
     public UserRole() {}
 
@@ -41,14 +53,15 @@ public class UserRole {
 
     /**
      * Sets the ID
+     * @param id type id
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Gets name of a role.
-     * @return the role name.
+     * Gets name of a role
+     * @return the role name
      */
     public String getName() {
         return name;
@@ -56,6 +69,7 @@ public class UserRole {
 
     /**
      * Sets the name of the role
+     * @param name type name of role
      */
     public void setName(String name) {
         this.name = name;
